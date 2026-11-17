@@ -22,7 +22,7 @@ async def get_matrix(url: str) -> List[int]:
         return []
 
     print("Шаг 2: Ищу все числа в тексте...")
-    all_numbers_as_text = re.findall(r'\d+', text)
+    all_numbers_as_text = re.findall(r'\d+', text) #поиск всех последовательностей цифр
 
     numbers = []
     for num_text in all_numbers_as_text:
@@ -30,6 +30,7 @@ async def get_matrix(url: str) -> List[int]:
 
     print("Найдено чисел:", len(numbers))
 
+    #вычисляем размер матрицы, заранее знаея, что она будет квадратной
     n = int(len(numbers) ** 0.5)
     print("Размер матрицы:", n, "на", n)
 
@@ -44,6 +45,7 @@ async def get_matrix(url: str) -> List[int]:
         matrix.append(row)
 
     print("Шаг 4: Иду по спирали...")
+    #границы обхода: верх, низ, лево, право
     result = []
     top = 0
     bottom = n - 1
@@ -53,21 +55,21 @@ async def get_matrix(url: str) -> List[int]:
     while top <= bottom and left <= right:
         for i in range(top, bottom + 1):
             result.append(matrix[i][left])
-        left += 1
+        left += 1 #сдвиг левой границы вправо
 
         for i in range(left, right + 1):
             result.append(matrix[bottom][i])
-        bottom -= 1
+        bottom -= 1 #сдвиг нижней границы вверх
 
         if left <= right:
             for i in range(bottom, top - 1, -1):
                 result.append(matrix[i][right])
-            right -= 1
+            right -= 1 #сдвиг правой гранцы влево
 
         if top <= bottom:
             for i in range(right, left - 1, -1):
                 result.append(matrix[top][i])
-            top += 1
+            top += 1 #сдвиг верхней границы вниз
 
     print("Готово! Спираль собрана.")
     return result
